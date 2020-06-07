@@ -20,7 +20,7 @@ This idea was originally proposed for this year's TASA Night Market, which has u
 
 The following parts list reflects parts that will be used to build the application's accompanying ticket dispenser.
 
-*This parts list is still a work in progress. Purchased quantities may be more than what is actually needed for the project.*
+*This parts list is still a work in progress. Purchased quantities may be more than what is needed for the project.*
 
 | Part | Quantity | Unit Price | Total Price |
 |------|----------|------------|-------------|
@@ -47,15 +47,15 @@ The rest of this week was spent on getting a base Android application up and run
 
 ## Week 7 Update (May 15)
 
-I started this week by completing Homework 3. In doing so, I was able to learn how to make HTTP requests to endpoints, as well as continuously listen for for responses, both of which are essential components to my application. My project will be set up in a similar fashion to that of Homework 3, where my application will be interfacing with a backend server that will handle the task of scraping the owner's Gmail account and parsing any Venmo entries.
+I started this week by completing Homework 3. In doing so, I was able to learn how to make HTTP requests to endpoints, as well as continuously listen for responses, both of which are essential components to my application. My project will be set up in a similar fashion to that of Homework 3, where my application will be interfacing with a backend server that will handle the task of scraping the owner's Gmail account and parsing any Venmo entries.
 
-After completing Homework 3, I focused my efforts on ordering the necessary parts for the ticket dispenser. I decided to keep the ticket dispenser simple and simply dispense tickets using one or two stepper motors, with a photoresistor to detect pulses in light that result from ticket edges passing by. I also decided to add an electromagnet to secure tickets from forcefully being pulled out. The parts have been ordered as of May 17th, and should arrive within the next week.
+After completing Homework 3, I focused my efforts on ordering the necessary parts for the ticket dispenser. I decided to keep the ticket dispenser simple and simply dispense tickets using one or two stepper motors, with a photoresistor to detect pulses in light that result from ticket edges passing by. I also decided to add an electromagnet to secure tickets from forcefully being pulled out. The parts have been ordered as of May 17th and should arrive within the next week.
 
 Since the deadline for the BS/MS application was this week, I did not plan on working on the Android app this week. I will continue doing so next week, after my application has been submitted and I am able to catch up on my backlog of assignments.
 
 ## Week 8 Update (May 22)
 
-I staarted to receive the parts I had ordered for the ticket dispenser. The first part I received was the electromagnet. Upon testing the electromagnet with the Arduino, however, I discovered that the electromagnet I had ordered did not have enough force to prevent tickets from being forcefully pulled out. Since I didn't want to wait another week for shipping and spend more money testing electromagnets, I opted to forego the electromagnet, at least for the purposes of this class. When the opportunity arises to actually deploy this into the wild, I will most likely revisit this.
+I started to receive the parts I had ordered for the ticket dispenser. The first part I received was the electromagnet. Upon testing the electromagnet with the Arduino, however, I discovered that the electromagnet I had ordered did not have enough force to prevent tickets from being forcefully pulled out. Since I did not want to wait another week for shipping and spend more money testing electromagnets, I opted to forego the electromagnet, at least for the purposes of this class. When the opportunity arises to deploy this into the wild, I will most likely revisit this.
 
 On the software side, I spent this week learning how to interface with the Gmail API. I looked into using the Gmail API from the following two standpoints:
 
@@ -64,13 +64,13 @@ On the software side, I spent this week learning how to interface with the Gmail
 * Call the Gmail API separately in a backend server, and have the Android application poll the server (similar to Homework 3)
   * This method would likely involve coding in JavaScript / Node.JS and use the [Node API library](https://googleapis.dev/nodejs/googleapis/latest/gmail/classes/Gmail.html)
 
-While performing the email scraping directly in the application would allow the application to run standalone, I began to realize that scalability would be an issue. If this app were to be deployed for actual use at a night market, this app wouldn't be used alone, as there would likely be multiple instances of this app running concurrently, each on their own kiosk device. This would allow multiple people to line up and make their purchases in parallel, similar to a grocery store's "Self Checkout" section. Requiring each instance of the app to parse emails individually would slow runtime on each device, and would likely eat up my Gmail quota, both of which are undesirable for this app. 
+While performing the email scraping directly in the application would allow the application to run standalone, I began to realize that scalability would be an issue. If this app were to be deployed for actual use at a night market, this app wouldn't be used alone, as there would likely be multiple instances of this app running concurrently, each on their own kiosk device. This would allow multiple people to line up and make their purchases in parallel, similar to a grocery store's "Self-Checkout" section. Requiring each instance of the app to parse emails individually would slow runtime on each device, and would likely eat up my Gmail quota, both of which are undesirable for this app. 
 
-As a result, I opted to go for the Node backend method. While this does mean that you need a backend server configured to run this application (therefore removing its ability to be standalone), I can configure the backend to process each email only once, caching or storing the processed emails to be picked up later to reduce request times and minimize calls to the Gmail API. Since I already have past experience using Node from personal project experience and participating as an undergradaute lab assistant for CMPSC 48 this quarter, this change will also help me get up and running quicker and more efficiently. 
+As a result, I opted to go for the Node backend method. While this does mean that you need a backend server configured to run this application (therefore removing its ability to be standalone), I can configure the backend to process each email only once, caching or storing the processed emails to be picked up later to reduce request times and minimize calls to the Gmail API. Since I already have experience using Node from personal projects and participating as an undergraduate lab assistant for CMPSC 48 this quarter, this change will also help me get up and running quicker and more efficiently. 
 
 ## Week 9 Update (May 29)
 
-I received all the parts, and spent the majortiy of this week assembling the ticket dispenser. I had originally hoped to create my own wood casing for my project, but I realized I lacked the tools to do so at home and do not have access to a lab, so I opted to make my project out of styrofoam, paper, cardboard, and miscellaneous parts I scavenged from Daiso. Definitely not ideal for production, but it serves as a nice prototype. :)
+I received all the parts and spent the majority of this week assembling the ticket dispenser. I had originally hoped to create my own wood casing for my project, but I realized I lacked the tools to do so at home and do not have access to a lab, so I opted to make my project out of Styrofoam, paper, cardboard, and miscellaneous parts I scavenged from Daiso. Definitely not ideal for production, but it serves as a nice prototype. :)
 
 Given the limited resources I have, I redesigned my ticket dispenser mechanism to work as follows:
 
@@ -101,14 +101,14 @@ I began this week by finishing the assembly of ticket dispenser and the developm
 My plan of action for implementing the Android application is as follows:
 
 1. Using GauchoPay from Homework 3 as a starting point, implement calls to the backend.
-    * Calls neeeded: log in, create transaction, update transaction
+    * Includes: logging in, creating transactions, and updating transactions
 2. Design the user interface to be clean, kiosk-like, and easily usable.
 3. Implement UART communication over Bluetooth to connect to my Arduino ticket dispenser.
     * Implement UART communication in my ticket dispenser as well
     * Communicate the number of tickets to be printed out
 4. Implement admin functionality, initially protected by a passcode
-    * Ability to manually dispense ticckets
+    * Ability to manually dispense tickets
     * Ability to manually print Venmo purchases without a transaction code
 5. Implement NFC functionality to access admin settings
 
-Due to my other final project, I am not able to spend much time on this early on in the week, so progress will be limited for now. I will continue to work on this over the weekend and into next week, where I will post my final update.
+Due to my other final project, I am not able to spend much time on this early in the week, so progress will be limited for now. I will continue to work on this over the weekend and into next week, where I will post my final update.
