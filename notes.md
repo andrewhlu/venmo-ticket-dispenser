@@ -12,3 +12,4 @@ old
 | [5V Electromagnet 2.5kg Holding Force](https://www.digikey.com/short/z4bnvv) | 1 | $7.50 | $7.50 |
 | [Stepper Motor Hybrid Bipolar 12V](https://www.digikey.com/short/z4bd90) | 1 | $16.85 | $16.85 |
 | [Stepper Driver Bipolar 5VDC Supply 0.75A 30V Load](https://www.digikey.com/product-detail/en/sparkfun-electronics/ROB-12779/1568-1108-ND/5318750) | 1 | $14.95 | $14.95 |
+| [5V 50N Electromagnet](https://www.amazon.com/dp/B01N108S9A) | 1 | $9.39 | $9.39 |
