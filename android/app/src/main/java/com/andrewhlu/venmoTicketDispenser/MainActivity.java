@@ -55,8 +55,8 @@ public class MainActivity extends Activity {
 
         ImageView settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener((view) -> {
-            // Navigate to login activity
-            Intent newIntent = new Intent(this, LoginActivity.class);
+            // Navigate to settings activity
+            Intent newIntent = new Intent(this, SettingsActivity.class);
             startActivity(newIntent);
         });
 

@@ -14,27 +14,36 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
-public class LoginWithAccessToken extends AsyncTask<String, String, String>  {
+public class UpdateSettings extends AsyncTask<String, String, String> {
     private static final String TAG = "VenmoTicketDispenser";
     private Context mContext;
     private Activity mActivity;
     private String mAccessToken;
+    private String mIdentifier;
+    private float mCostPerTicket;
+    private String mVenmoHandle;
     private SharedPreferences mSharedPreferences;
     private URL urlObject;
 
-    LoginWithAccessToken(Context context, Activity activity, String accessToken, SharedPreferences sharedPreferences) {
+    UpdateSettings(Context context, Activity activity, String accessToken, String identifier,
+                   float costPerTicket, String venmoHandle, SharedPreferences sharedPreferences) {
         this.mContext = context;
         this.mActivity = activity;
         this.mAccessToken = accessToken;
+        this.mIdentifier = identifier;
+        this.mCostPerTicket = costPerTicket;
+        this.mVenmoHandle = venmoHandle;
         this.mSharedPreferences = sharedPreferences;
     }
 
     @Override
     protected String doInBackground(String... uri) {
-        Log.d(TAG, "LoginWithAccessToken Running");
+        Log.d(TAG, "UpdateSettings Running");
         String responseString = null;
         try {
             String requestURL = "https://alu-moe.now.sh/api/venmo?code=" + mAccessToken;
@@ -46,10 +55,38 @@ public class LoginWithAccessToken extends AsyncTask<String, String, String>  {
 
         HttpURLConnection connection = null;
         try {
+            // Construct the JSON object to send to backend
+            JSONObject bodyObject = new JSONObject();
+
+            // Put identifier in object if not already defined
+            String identifier = mSharedPreferences.getString("identifier", "");
+            if(identifier.isEmpty()) {
+                bodyObject.put("identifier", mIdentifier);
+            }
+
+            // Put cost per ticket and venmo handle
+            bodyObject.put("costPerTicket", mCostPerTicket);
+            bodyObject.put("venmoHandle", mVenmoHandle);
+
+            Log.v(TAG, bodyObject.toString());
+
+            // Establish HTTP connection
             connection = (HttpURLConnection) urlObject.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            // Place JSON in body
+            byte[] outputInBytes = bodyObject.toString().getBytes("UTF-8");
+            OutputStream os = connection.getOutputStream();
+            os.write(outputInBytes);
+            os.close();
+
             if(connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 // If this log is printed, then something went wrong with your call
-                Log.d(TAG, "LoginWithAccessToken FAILED");
+                Log.d(TAG, "UpdateSettings FAILED");
             }
             return readFullyAsString(connection.getInputStream());
         } catch(Exception e) {
@@ -72,49 +109,32 @@ public class LoginWithAccessToken extends AsyncTask<String, String, String>  {
         super.onPostExecute(result);
         Log.v(TAG, "Result: " + result);
 
-        JSONObject resultObj = null;
-
         try {
             // Turn result into JSON object
-            resultObj = new JSONObject(result);
+            JSONObject resultObj = new JSONObject(result);
 
             // First, check if code is initialized
-            if (resultObj.getBoolean("initialized")) {
-                // App is already initialized, store code and return to main activity
+            if(resultObj.getBoolean("initialized")) {
+                // Update was successful, write new settings
                 SharedPreferences.Editor editor = mSharedPreferences.edit();
-                editor.putString("accessToken", mAccessToken);
                 editor.putString("identifier", resultObj.getString("identifier"));
                 editor.putFloat("costPerTicket", (float) resultObj.getDouble("costPerTicket"));
                 editor.putString("venmoHandle", resultObj.getString("venmoHandle"));
                 editor.apply();
 
-                Toast.makeText(mContext, "Successfully logged in!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Settings saved!", Toast.LENGTH_SHORT).show();
 
                 // Return to main activity
                 Intent newIntent = new Intent(mContext, MainActivity.class);
                 mActivity.startActivity(newIntent);
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if(resultObj.getString("error").equals("Invalid access code")) {
-                // This access code is invalid, display a toast
-                Toast.makeText(mContext, "Invalid access code", Toast.LENGTH_SHORT).show();
+            else {
+                // An error occurred, display the error
+                String error = resultObj.getString("error");
+                Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
-            // This access code is valid, but the app is not initialized
-            Toast.makeText(mContext, "Successfully logged in!", Toast.LENGTH_SHORT).show();
-
-            // Store access token
-            SharedPreferences.Editor editor = mSharedPreferences.edit();
-            editor.putString("accessToken", mAccessToken);
-            editor.apply();
-
-            // Go to settings activity
-            Intent newIntent = new Intent(mContext, SettingsActivity.class);
-            mActivity.startActivity(newIntent);
+            e.printStackTrace();
         }
     }
 
@@ -132,4 +152,5 @@ public class LoginWithAccessToken extends AsyncTask<String, String, String>  {
 
         return stream;
     }
+
 }
