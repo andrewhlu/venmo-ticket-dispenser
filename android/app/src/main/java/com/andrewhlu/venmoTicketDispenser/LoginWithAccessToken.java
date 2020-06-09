@@ -93,6 +93,8 @@ public class LoginWithAccessToken extends AsyncTask<String, String, String>  {
                 // Return to main activity
                 Intent newIntent = new Intent(mContext, MainActivity.class);
                 mActivity.startActivity(newIntent);
+
+                return;
             }
         } catch (JSONException e) {
             e.printStackTrace();
