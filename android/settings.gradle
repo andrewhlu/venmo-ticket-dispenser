@@ -1,2 +1,2 @@
-rootProject.name='Test Application'
+rootProject.name='Venmo Ticket Dispenser'
 include ':app'
