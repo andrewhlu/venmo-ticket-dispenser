@@ -17,157 +17,133 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
+    <Button
+        android:id="@+id/manualDispenseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Dispense Tickets"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/manualDispenseDescription" />
+
+    <Button
+        android:id="@+id/startServiceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Service"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/startServiceDescription"
+        app:layout_constraintTop_toTopOf="@+id/startServiceTitle" />
+
+    <Button
+        android:id="@+id/stopServiceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Service"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/stopServiceDescription"
+        app:layout_constraintTop_toTopOf="@+id/stopServiceTitle" />
+
+    <Button
+        android:id="@+id/applicationSettingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Application Settings"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/manualDispenseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toEndOf="@+id/manualDispenseDescription"
+        app:layout_constraintTop_toTopOf="@+id/manualDispenseTitle" />
+
     <TextView
         android:id="@+id/toolbarTitleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="Venmo Ticket Dispenser Application Settings"
+        android:text="Venmo Ticket Dispenser Bluetooth Settings"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
         app:layout_constraintLeft_toLeftOf="@id/toolbar"
         app:layout_constraintTop_toTopOf="@id/toolbar" />
 
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Logout"
-        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/venmoHandleDescription" />
-
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Cancel Changes"
-        app:layout_constraintEnd_toStartOf="@+id/saveButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/logoutButton"
-        app:layout_constraintTop_toBottomOf="@id/venmoHandleDescription" />
-
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Save Changes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/cancelButton"
-        app:layout_constraintTop_toBottomOf="@id/venmoHandleDescription" />
-
-    <Button
-        android:id="@+id/bluetoothSettingsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bluetooth Settings"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/identifierText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/identifierDescription"
-        app:layout_constraintTop_toTopOf="@+id/identifierTitle" />
-
-    <EditText
-        android:id="@+id/costPerTicketText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/costPerTicketDescription"
-        app:layout_constraintTop_toTopOf="@+id/costPerTicketTitle" />
-
-    <EditText
-        android:id="@+id/venmoHandleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toEndOf="@+id/venmoHandleDescription"
-        app:layout_constraintTop_toTopOf="@+id/venmoHandleTitle" />
-
     <TextView
-        android:id="@+id/identifierTitle"
+        android:id="@+id/startServiceTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="Transaction Identifier"
+        android:text="Start Service"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
-        android:id="@+id/identifierDescription"
+        android:id="@+id/startServiceDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="350dp"
         android:layout_marginStart="20dp"
-        android:text="Consists of four letters, case-insensitive. Users will be asked to type this in their Venmo transactions."
+        android:text='Starts the Bluetooth service. Runs on app start.  This will open a connection with the device named "HC-05".'
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/identifierTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/startServiceTitle" />
 
     <TextView
-        android:id="@+id/costPerTicketTitle"
+        android:id="@+id/stopServiceTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:text="Cost Per Ticket"
+        android:text="Stop Service"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/identifierDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/startServiceDescription" />
 
     <TextView
-        android:id="@+id/costPerTicketDescription"
+        android:id="@+id/stopServiceDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="350dp"
         android:layout_marginStart="20dp"
-        android:text="Transaction amount is divided by this cost per ticket amount to determine the number of tickets."
+        android:text="Stops the Bluetooth service."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/costPerTicketTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/stopServiceTitle" />
 
     <TextView
-        android:id="@+id/venmoHandleTitle"
+        android:id="@+id/manualDispenseTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:text="Venmo Handle"
+        android:text="Manually Dispense Tickets"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/costPerTicketDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/stopServiceDescription" />
 
     <TextView
-        android:id="@+id/venmoHandleDescription"
+        android:id="@+id/manualDispenseDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="350dp"
         android:layout_marginStart="20dp"
-        android:text="Venmo account for purchases to be sent to.\nWill be displayed to the user."
+        android:text="Manually dispense the number of tickets specified."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/venmoHandleTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/manualDispenseTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

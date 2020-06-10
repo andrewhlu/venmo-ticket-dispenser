@@ -29,6 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
         Button logoutButton = findViewById(R.id.logoutButton);
         Button cancelButton = findViewById(R.id.cancelButton);
         Button saveButton = findViewById(R.id.saveButton);
+        Button bluetoothSettingsButton = findViewById(R.id.bluetoothSettingsButton);
 
         EditText identifierText = findViewById(R.id.identifierText);
         String identifier = mSharedPreferences.getString("identifier", "");
@@ -90,6 +91,12 @@ public class SettingsActivity extends AppCompatActivity {
             new UpdateSettings(getApplicationContext(), this, identifierText.getText().toString(),
                     Float.parseFloat(costPerTicketText.getText().toString()),
                     venmoHandleText.getText().toString(), mSharedPreferences).execute("");
+        });
+
+        bluetoothSettingsButton.setOnClickListener((view) -> {
+            // Go to bluetooth settings activity
+            Intent newIntent = new Intent(this, BluetoothSettingsActivity.class);
+            startActivity(newIntent);
         });
     }
 

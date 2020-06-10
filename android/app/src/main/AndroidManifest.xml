@@ -17,6 +17,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".TransactionActivity" />
         <activity android:name=".SettingsActivity" />
+        <activity android:name=".BluetoothSettingsActivity" />
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".MainActivity"
