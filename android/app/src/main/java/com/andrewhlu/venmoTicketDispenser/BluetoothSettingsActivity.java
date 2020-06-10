@@ -28,6 +28,7 @@ public class BluetoothSettingsActivity extends AppCompatActivity {
         Button stopServiceButton = findViewById(R.id.stopServiceButton);
         Button manualDispenseButton = findViewById(R.id.manualDispenseButton);
         Button applicationSettingsButton = findViewById(R.id.applicationSettingsButton);
+        Button securitySettingsButton = findViewById(R.id.securitySettingsButton);
 
         EditText manualDispenseText = findViewById(R.id.manualDispenseText);
         manualDispenseText.setText("0");
@@ -55,6 +56,12 @@ public class BluetoothSettingsActivity extends AppCompatActivity {
         applicationSettingsButton.setOnClickListener((view) -> {
             // Go to app settings activity
             Intent newIntent = new Intent(this, SettingsActivity.class);
+            startActivity(newIntent);
+        });
+
+        securitySettingsButton.setOnClickListener((view) -> {
+            // Go to security settings activity
+            Intent newIntent = new Intent(this, SecuritySettingsActivity.class);
             startActivity(newIntent);
         });
     }

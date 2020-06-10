@@ -3,14 +3,19 @@ package com.andrewhlu.venmoTicketDispenser;
 import android.app.ActionBar;
 import android.app.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
     private static final String TAG = "VenmoTicketDispenser";
@@ -72,9 +77,48 @@ public class MainActivity extends Activity {
 
         ImageView settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener((view) -> {
-            // Navigate to settings activity
-            Intent newIntent = new Intent(this, SettingsActivity.class);
-            startActivity(newIntent);
+            // Check if a passcode exists
+            if(mSharedPreferences.getString("passcode", "").isEmpty()) {
+                // No passcode is set, navigate to settings activity
+                Intent newIntent = new Intent(this, SettingsActivity.class);
+                startActivity(newIntent);
+            }
+            else {
+                // Prompt user to enter passcode
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Enter Passcode");
+
+                // Set up the input
+                final EditText input = new EditText(this);
+
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(input.getText().toString().equals(mSharedPreferences.getString("passcode", ""))) {
+                            // Passcode is correct, navigate to settings activity
+                            Intent newIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+                            startActivity(newIntent);
+                        }
+                        else {
+                            // Passcode is incorrect, display toast
+                            Toast.makeText(getApplicationContext(), "Incorrect passcode", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
         });
     }
 

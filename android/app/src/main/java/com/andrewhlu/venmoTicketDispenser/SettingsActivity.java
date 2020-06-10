@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.HashSet;
+
 public class SettingsActivity extends AppCompatActivity {
     private View appView;
     private SharedPreferences mSharedPreferences;
@@ -30,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
         Button cancelButton = findViewById(R.id.cancelButton);
         Button saveButton = findViewById(R.id.saveButton);
         Button bluetoothSettingsButton = findViewById(R.id.bluetoothSettingsButton);
+        Button securitySettingsButton = findViewById(R.id.securitySettingsButton);
 
         EditText identifierText = findViewById(R.id.identifierText);
         String identifier = mSharedPreferences.getString("identifier", "");
@@ -67,6 +70,9 @@ public class SettingsActivity extends AppCompatActivity {
                     editor.putFloat("costPerTicket", 0.0f);
                     editor.putString("venmoHandle", "");
                     editor.putString("transactionCode", "");
+                    editor.putString("passcode", "");
+                    editor.putBoolean("addingNfcTag", false);
+                    editor.putStringSet("nfcTags", new HashSet<>());
                     editor.apply();
 
                     // Display logged out toast
@@ -96,6 +102,12 @@ public class SettingsActivity extends AppCompatActivity {
         bluetoothSettingsButton.setOnClickListener((view) -> {
             // Go to bluetooth settings activity
             Intent newIntent = new Intent(this, BluetoothSettingsActivity.class);
+            startActivity(newIntent);
+        });
+
+        securitySettingsButton.setOnClickListener((view) -> {
+            // Go to security settings activity
+            Intent newIntent = new Intent(this, SecuritySettingsActivity.class);
             startActivity(newIntent);
         });
     }

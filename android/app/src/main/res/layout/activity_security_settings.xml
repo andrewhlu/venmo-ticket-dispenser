@@ -17,34 +17,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
+    <TextView
+        android:id="@+id/toolbarTitleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Venmo Ticket Dispenser Security Settings"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintLeft_toLeftOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="@id/toolbar" />
+
     <Button
-        android:id="@+id/manualDispenseButton"
+        android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Dispense Tickets"
+        android:text="Save Passcode"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/manualDispenseDescription" />
+        app:layout_constraintTop_toBottomOf="@id/nfcRemoveDescription" />
 
     <Button
-        android:id="@+id/startServiceButton"
+        android:id="@+id/bluetoothSettingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Service"
+        android:text="Bluetooth Settings"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/startServiceDescription"
-        app:layout_constraintTop_toTopOf="@+id/startServiceTitle" />
-
-    <Button
-        android:id="@+id/stopServiceButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stop Service"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/stopServiceDescription"
-        app:layout_constraintTop_toTopOf="@+id/stopServiceTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/applicationSettingsButton"
@@ -52,107 +54,103 @@
         android:layout_height="wrap_content"
         android:text="Application Settings"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/securitySettingsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Security Settings"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toStartOf="@+id/applicationSettingsButton"
+        app:layout_constraintEnd_toStartOf="@+id/bluetoothSettingsButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/manualDispenseText"
+        android:id="@+id/passcodeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toEndOf="@+id/manualDispenseDescription"
-        app:layout_constraintTop_toTopOf="@+id/manualDispenseTitle" />
+        app:layout_constraintStart_toEndOf="@+id/passcodeDescription"
+        app:layout_constraintTop_toTopOf="@+id/passcodeTitle" />
 
-    <TextView
-        android:id="@+id/toolbarTitleView"
+    <Button
+        android:id="@+id/nfcAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="Venmo Ticket Dispenser Bluetooth Settings"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar"
-        app:layout_constraintLeft_toLeftOf="@id/toolbar"
-        app:layout_constraintTop_toTopOf="@id/toolbar" />
+        android:text="Add NFC Tag"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/nfcAddDescription"
+        app:layout_constraintTop_toTopOf="@+id/nfcAddTitle" />
+
+    <Button
+        android:id="@+id/nfcRemoveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove NFC Tags"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/nfcRemoveDescription"
+        app:layout_constraintTop_toTopOf="@+id/nfcRemoveTitle" />
 
     <TextView
-        android:id="@+id/startServiceTitle"
+        android:id="@+id/passcodeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="Start Service"
+        android:text="Passcode"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
-        android:id="@+id/startServiceDescription"
+        android:id="@+id/passcodeDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="350dp"
         android:layout_marginStart="20dp"
-        android:text='Starts the Bluetooth service. Runs on app start.  This will open a connection with the device named "HC-05".'
+        android:text="If present, a passcode or valid NFC tag is required to enter the settings menu."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startServiceTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/passcodeTitle" />
 
     <TextView
-        android:id="@+id/stopServiceTitle"
+        android:id="@+id/nfcAddTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:text="Stop Service"
+        android:text="Add NFC Tag"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startServiceDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/passcodeDescription" />
 
     <TextView
-        android:id="@+id/stopServiceDescription"
+        android:id="@+id/nfcAddDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="350dp"
         android:layout_marginStart="20dp"
-        android:text="Stops the Bluetooth service."
+        android:text="Add an NFC tag that can be used to open the settings menu instead of the passcode."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stopServiceTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/nfcAddTitle" />
 
     <TextView
-        android:id="@+id/manualDispenseTitle"
+        android:id="@+id/nfcRemoveTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:text="Manually Dispense Tickets"
+        android:text="Remove All NFC Tags"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stopServiceDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/nfcAddDescription" />
 
     <TextView
-        android:id="@+id/manualDispenseDescription"
+        android:id="@+id/nfcRemoveDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="350dp"
         android:layout_marginStart="20dp"
-        android:text="Manually dispense the number of tickets specified."
+        android:text="Remove all previously added NFC tags."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/manualDispenseTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/nfcRemoveTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

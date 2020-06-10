@@ -71,6 +71,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/securitySettingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Security Settings"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toStartOf="@+id/bluetoothSettingsButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/identifierText"
         android:layout_width="wrap_content"
