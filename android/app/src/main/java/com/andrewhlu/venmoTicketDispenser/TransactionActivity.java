@@ -1,10 +1,13 @@
 package com.andrewhlu.venmoTicketDispenser;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -38,9 +42,11 @@ public class TransactionActivity extends AppCompatActivity {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    // Launch the asynchronous process to grab the web API
-                    new LookupTransaction(getApplicationContext(), mActivity, mTransactionArray,
-                            mAdapter, mSharedPreferences).execute("");
+                    if(!mSharedPreferences.getString("transactionCode", "").isEmpty()) {
+                        // Launch the asynchronous process to grab the web API
+                        new LookupTransaction(getApplicationContext(), mActivity, mTransactionArray,
+                                mAdapter, mSharedPreferences).execute("");
+                    }
                 }
             });
         }
@@ -98,7 +104,17 @@ public class TransactionActivity extends AppCompatActivity {
 
         Button printTicketsButton = findViewById(R.id.printTicketsButton);
         printTicketsButton.setOnClickListener((view -> {
-            // TODO: call bluetooth
+            // Prompt user to confirm logout
+            String[] options = {"Yes, print my tickets!", "No, go back"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Are you sure that all transactions have been added?");
+            builder.setItems(options, (dialogInterface, i) -> {
+                if(options[i].equals("Yes, print my tickets!")) {
+                    // Send request to complete transaction
+                    new CompleteTransaction(getApplicationContext(), mActivity, mSharedPreferences).execute("");
+                }
+            });
+            builder.show();
         }));
     }
 
@@ -119,10 +135,26 @@ public class TransactionActivity extends AppCompatActivity {
         timer.cancel();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        // Do nothing on back pressed
-//    }
+    @Override
+    public void onBackPressed() {
+        // Prompt user to confirm transaction cancel
+        String[] options = {"Yes", "No"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure you want to cancel this transaction? All payments will be lost!");
+        builder.setItems(options, (dialogInterface, i) -> {
+            if(options[i].equals("Yes")) {
+                // Clear transaction code
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putString("transactionCode", "");
+                editor.apply();
+
+                // Return to main activity
+                Intent newIntent = new Intent(this, MainActivity.class);
+                startActivity(newIntent);
+            }
+        });
+        builder.show();
+    }
 
     protected void hideActionBar() {
         int uiOptions = View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;

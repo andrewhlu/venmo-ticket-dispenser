@@ -23,24 +23,28 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Connect to ticket dispenser via Bluetooth
+        Intent dispenseIntent = new Intent(this, BluetoothService.class);
+        startService(dispenseIntent);
+
         appView = getWindow().getDecorView();
         appView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int i) {
-            if((i & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                Log.v(TAG, "System UI visible");
+                if((i & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    Log.v(TAG, "System UI visible");
 
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        hideActionBar();
-                    }
-                }, 5000);
-            }
-            else {
-                Log.v(TAG, "System UI hidden");
-            }
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideActionBar();
+                        }
+                    }, 5000);
+                }
+                else {
+                    Log.v(TAG, "System UI hidden");
+                }
             }
         });
 
