@@ -53,6 +53,11 @@ public class LoginActivity extends AppCompatActivity {
         showActionBar();
     }
 
+    @Override
+    public void onBackPressed() {
+        // Do nothing on back pressed
+    }
+
     protected void showActionBar() {
         int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
         appView.setSystemUiVisibility(uiOptions);

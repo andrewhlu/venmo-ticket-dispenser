@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 public class MainActivity extends Activity {
@@ -52,6 +53,18 @@ public class MainActivity extends Activity {
             Intent newIntent = new Intent(this, LoginActivity.class);
             startActivity(newIntent);
         }
+        // Check if transaction code exists. If so, resume transaction
+        else if(!mSharedPreferences.getString("transactionCode", "").isEmpty()) {
+            // Transaction code exists, navigate to transaction activity
+            Intent newIntent = new Intent(this, TransactionActivity.class);
+            startActivity(newIntent);
+        }
+
+        Button startTransactionButton = findViewById(R.id.startTransactionButton);
+        startTransactionButton.setOnClickListener((view) -> {
+            // Create a new transaction
+            new CreateTransaction(getApplicationContext(), this, mSharedPreferences).execute("");
+        });
 
         ImageView settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener((view) -> {
@@ -67,6 +80,11 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         hideActionBar();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing on back pressed
     }
 
     protected void hideActionBar() {

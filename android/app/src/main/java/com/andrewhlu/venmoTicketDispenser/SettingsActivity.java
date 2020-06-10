@@ -65,6 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
                     editor.putString("identifier", "");
                     editor.putFloat("costPerTicket", 0.0f);
                     editor.putString("venmoHandle", "");
+                    editor.putString("transactionCode", "");
                     editor.apply();
 
                     // Display logged out toast
@@ -86,8 +87,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener((view) -> {
             // Send data to API
-            new UpdateSettings(getApplicationContext(), this, mSharedPreferences.getString("accessToken", ""),
-                    identifierText.getText().toString(), Float.parseFloat(costPerTicketText.getText().toString()),
+            new UpdateSettings(getApplicationContext(), this, identifierText.getText().toString(),
+                    Float.parseFloat(costPerTicketText.getText().toString()),
                     venmoHandleText.getText().toString(), mSharedPreferences).execute("");
         });
     }
@@ -96,6 +97,18 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showActionBar();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Check if the identifier has been set. If so, return to main activity
+        String identifier = mSharedPreferences.getString("identifier", "");
+
+        if(!identifier.isEmpty()) {
+            // Return to main activity
+            Intent newIntent = new Intent(this, MainActivity.class);
+            startActivity(newIntent);
+        }
     }
 
     protected void showActionBar() {

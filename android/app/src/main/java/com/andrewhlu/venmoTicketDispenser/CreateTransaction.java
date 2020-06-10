@@ -14,38 +14,30 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class UpdateSettings extends AsyncTask<String, String, String> {
+public class CreateTransaction extends AsyncTask<String, String, String> {
     private static final String TAG = "VenmoTicketDispenser";
     private Context mContext;
     private Activity mActivity;
     private String mAccessToken;
-    private String mIdentifier;
-    private float mCostPerTicket;
-    private String mVenmoHandle;
     private SharedPreferences mSharedPreferences;
     private URL urlObject;
 
-    UpdateSettings(Context context, Activity activity, String identifier, float costPerTicket,
-                   String venmoHandle, SharedPreferences sharedPreferences) {
+    CreateTransaction(Context context, Activity activity, SharedPreferences sharedPreferences) {
         this.mContext = context;
         this.mActivity = activity;
-        this.mIdentifier = identifier;
-        this.mCostPerTicket = costPerTicket;
-        this.mVenmoHandle = venmoHandle;
         this.mSharedPreferences = sharedPreferences;
         this.mAccessToken = mSharedPreferences.getString("accessToken", "");
     }
 
     @Override
     protected String doInBackground(String... uri) {
-        Log.d(TAG, "UpdateSettings Running");
+        Log.d(TAG, "CreateTransaction Running");
         String responseString = null;
         try {
-            String requestURL = "https://alu-moe.now.sh/api/venmo?code=" + mAccessToken;
+            String requestURL = "https://alu-moe.now.sh/api/venmo/transaction/create?code=" + mAccessToken;
             urlObject = new URL(requestURL);
         } catch(Exception e) {
             e.printStackTrace();
@@ -54,21 +46,6 @@ public class UpdateSettings extends AsyncTask<String, String, String> {
 
         HttpURLConnection connection = null;
         try {
-            // Construct the JSON object to send to backend
-            JSONObject bodyObject = new JSONObject();
-
-            // Put identifier in object if not already defined
-            String identifier = mSharedPreferences.getString("identifier", "");
-            if(identifier.isEmpty()) {
-                bodyObject.put("identifier", mIdentifier);
-            }
-
-            // Put cost per ticket and venmo handle
-            bodyObject.put("costPerTicket", mCostPerTicket);
-            bodyObject.put("venmoHandle", mVenmoHandle);
-
-            Log.v(TAG, bodyObject.toString());
-
             // Establish HTTP connection
             connection = (HttpURLConnection) urlObject.openConnection();
             connection.setRequestMethod("POST");
@@ -77,15 +54,9 @@ public class UpdateSettings extends AsyncTask<String, String, String> {
             connection.setDoInput(true);
             connection.setDoOutput(true);
 
-            // Place JSON in body
-            byte[] outputInBytes = bodyObject.toString().getBytes("UTF-8");
-            OutputStream os = connection.getOutputStream();
-            os.write(outputInBytes);
-            os.close();
-
             if(connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 // If this log is printed, then something went wrong with your call
-                Log.d(TAG, "UpdateSettings FAILED");
+                Log.d(TAG, "CreateTransaction FAILED");
             }
             return readFullyAsString(connection.getInputStream());
         } catch(Exception e) {
@@ -112,19 +83,15 @@ public class UpdateSettings extends AsyncTask<String, String, String> {
             // Turn result into JSON object
             JSONObject resultObj = new JSONObject(result);
 
-            // First, check if code is initialized
-            if(resultObj.getBoolean("initialized")) {
+            // Check if successful
+            if(resultObj.getBoolean("success")) {
                 // Update was successful, write new settings
                 SharedPreferences.Editor editor = mSharedPreferences.edit();
-                editor.putString("identifier", resultObj.getString("identifier"));
-                editor.putFloat("costPerTicket", (float) resultObj.getDouble("costPerTicket"));
-                editor.putString("venmoHandle", resultObj.getString("venmoHandle"));
+                editor.putString("transactionCode", resultObj.getString("code"));
                 editor.apply();
 
-                Toast.makeText(mContext, "Settings saved!", Toast.LENGTH_SHORT).show();
-
-                // Return to main activity
-                Intent newIntent = new Intent(mContext, MainActivity.class);
+                // Start transaction activity
+                Intent newIntent = new Intent(mContext, TransactionActivity.class);
                 mActivity.startActivity(newIntent);
             }
             else {

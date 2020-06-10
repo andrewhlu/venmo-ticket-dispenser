@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -14,38 +17,41 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-public class UpdateSettings extends AsyncTask<String, String, String> {
+public class LookupTransaction extends AsyncTask<String, String, String> {
     private static final String TAG = "VenmoTicketDispenser";
     private Context mContext;
     private Activity mActivity;
-    private String mAccessToken;
-    private String mIdentifier;
-    private float mCostPerTicket;
-    private String mVenmoHandle;
+    private ArrayList<String> mTransactionArray;
+    private ArrayAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
+    private String mAccessToken;
+    private String mTransactionCode;
     private URL urlObject;
 
-    UpdateSettings(Context context, Activity activity, String identifier, float costPerTicket,
-                   String venmoHandle, SharedPreferences sharedPreferences) {
+
+
+    LookupTransaction(Context context, Activity activity, ArrayList<String> transactionArray,
+                      ArrayAdapter adapter, SharedPreferences sharedPreferences) {
         this.mContext = context;
         this.mActivity = activity;
-        this.mIdentifier = identifier;
-        this.mCostPerTicket = costPerTicket;
-        this.mVenmoHandle = venmoHandle;
+        this.mTransactionArray = transactionArray;
+        this.mAdapter = adapter;
         this.mSharedPreferences = sharedPreferences;
         this.mAccessToken = mSharedPreferences.getString("accessToken", "");
+        this.mTransactionCode = mSharedPreferences.getString("transactionCode", "");
     }
 
     @Override
     protected String doInBackground(String... uri) {
-        Log.d(TAG, "UpdateSettings Running");
+        Log.d(TAG, "LookupTransaction Running");
         String responseString = null;
         try {
-            String requestURL = "https://alu-moe.now.sh/api/venmo?code=" + mAccessToken;
+            String requestURL = "https://alu-moe.now.sh/api/venmo/transaction?code=" + mAccessToken + "&transaction=" + mTransactionCode;
             urlObject = new URL(requestURL);
         } catch(Exception e) {
             e.printStackTrace();
@@ -54,38 +60,13 @@ public class UpdateSettings extends AsyncTask<String, String, String> {
 
         HttpURLConnection connection = null;
         try {
-            // Construct the JSON object to send to backend
-            JSONObject bodyObject = new JSONObject();
-
-            // Put identifier in object if not already defined
-            String identifier = mSharedPreferences.getString("identifier", "");
-            if(identifier.isEmpty()) {
-                bodyObject.put("identifier", mIdentifier);
-            }
-
-            // Put cost per ticket and venmo handle
-            bodyObject.put("costPerTicket", mCostPerTicket);
-            bodyObject.put("venmoHandle", mVenmoHandle);
-
-            Log.v(TAG, bodyObject.toString());
-
             // Establish HTTP connection
             connection = (HttpURLConnection) urlObject.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-
-            // Place JSON in body
-            byte[] outputInBytes = bodyObject.toString().getBytes("UTF-8");
-            OutputStream os = connection.getOutputStream();
-            os.write(outputInBytes);
-            os.close();
+            connection.setRequestMethod("GET");
 
             if(connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 // If this log is printed, then something went wrong with your call
-                Log.d(TAG, "UpdateSettings FAILED");
+                Log.d(TAG, "LookupTransaction FAILED");
             }
             return readFullyAsString(connection.getInputStream());
         } catch(Exception e) {
@@ -112,20 +93,30 @@ public class UpdateSettings extends AsyncTask<String, String, String> {
             // Turn result into JSON object
             JSONObject resultObj = new JSONObject(result);
 
-            // First, check if code is initialized
-            if(resultObj.getBoolean("initialized")) {
-                // Update was successful, write new settings
-                SharedPreferences.Editor editor = mSharedPreferences.edit();
-                editor.putString("identifier", resultObj.getString("identifier"));
-                editor.putFloat("costPerTicket", (float) resultObj.getDouble("costPerTicket"));
-                editor.putString("venmoHandle", resultObj.getString("venmoHandle"));
-                editor.apply();
+            // Check if successful
+            if(resultObj.getBoolean("success")) {
+                // Request was successful, get transaction object
+                JSONObject transactionObj = resultObj.getJSONObject("transaction");
 
-                Toast.makeText(mContext, "Settings saved!", Toast.LENGTH_SHORT).show();
+                // Display the ticket amount
+                TextView ticketCountText = mActivity.findViewById(R.id.ticketCountText);
+                ticketCountText.setText(transactionObj.getInt("tickets") + "");
 
-                // Return to main activity
-                Intent newIntent = new Intent(mContext, MainActivity.class);
-                mActivity.startActivity(newIntent);
+                // Clear transaction array
+                mTransactionArray.clear();
+
+                // Get list of emails
+                JSONObject emailObj = transactionObj.getJSONObject("emails");
+                for(Iterator<String> i = emailObj.keys(); i.hasNext();) {
+                    String key = i.next();
+
+                    // Add this email to the transaction array
+                    JSONObject email = emailObj.getJSONObject(key);
+                    mTransactionArray.add(email.getDouble("amount") + " - " + email.getString("name"));
+                }
+
+                // Re-render the list view
+                mAdapter.notifyDataSetChanged();
             }
             else {
                 // An error occurred, display the error
