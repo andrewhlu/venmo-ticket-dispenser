@@ -89,6 +89,8 @@ public class BluetoothService extends Service {
         return null;
     }
 
+    // The below code was adapted from the following Stack Overflow post:
+    // https://stackoverflow.com/questions/13450406/how-to-receive-serial-data-using-android-bluetooth
     void findBT() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(mBluetoothAdapter == null) {
