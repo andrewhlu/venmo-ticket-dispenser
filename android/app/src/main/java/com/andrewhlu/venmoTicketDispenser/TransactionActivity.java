@@ -130,6 +130,7 @@ public class TransactionActivity extends AppCompatActivity {
 
         // Cancel the timer to poll for transaction changes
         timer.cancel();
+        timer.purge();
     }
 
     @Override
