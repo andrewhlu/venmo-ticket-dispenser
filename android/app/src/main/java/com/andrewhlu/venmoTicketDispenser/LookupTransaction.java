@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
 
 public class LookupTransaction extends AsyncTask<String, String, String> {
     private static final String TAG = "VenmoTicketDispenser";
@@ -32,8 +33,6 @@ public class LookupTransaction extends AsyncTask<String, String, String> {
     private String mAccessToken;
     private String mTransactionCode;
     private URL urlObject;
-
-
 
     LookupTransaction(Context context, Activity activity, ArrayList<String> transactionArray,
                       ArrayAdapter adapter, SharedPreferences sharedPreferences) {
@@ -112,7 +111,7 @@ public class LookupTransaction extends AsyncTask<String, String, String> {
 
                     // Add this email to the transaction array
                     JSONObject email = emailObj.getJSONObject(key);
-                    mTransactionArray.add(email.getDouble("amount") + " - " + email.getString("name"));
+                    mTransactionArray.add(String.format(Locale.US, "$%.2f - %s", email.getDouble("amount"), email.getString("name")));
                 }
 
                 // Re-render the list view
