@@ -165,10 +165,6 @@ public class SecuritySettingsActivity extends AppCompatActivity {
                 }
             }
         }
-        else {
-            // This shouldn't happen
-            Toast.makeText(this, "Scan a tag", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
