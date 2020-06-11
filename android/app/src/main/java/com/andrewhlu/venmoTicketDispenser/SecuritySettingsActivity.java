@@ -157,7 +157,7 @@ public class SecuritySettingsActivity extends AppCompatActivity {
                 }
                 else {
                     // NFC tag is not valid, display message
-                    Toast.makeText(this, "Inalid NFC tag", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Invalid NFC tag", Toast.LENGTH_SHORT).show();
 
                     // Return to main activity
                     Intent newIntent = new Intent(this, MainActivity.class);
