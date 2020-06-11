@@ -4,9 +4,13 @@ Andrew Lu
 
 ECE 251, Spring 2020, Professor Isukapalli.
 
-[Venmo Ticket Dispenser repository on GitHub](https://github.com/andrewhlu/venmo-ticket-dispenser) - includes the Android app and all project documentation
+[Venmo Ticket Dispenser repository on GitHub](https://github.com/andrewhlu/venmo-ticket-dispenser) - includes the Android app, Arduino code, and project documentation
 
 [alu.moe repository on GitHub](https://github.com/andrewhlu/alu-moe) - includes the backend server, integrated into my (soon-to-be) personal website
+
+---
+
+Venmo Ticket Dispenser Demo Video: [https://youtu.be/lWllEX4snCA](https://youtu.be/lWllEX4snCA)
 
 ---
 
@@ -14,22 +18,58 @@ ECE 251, Spring 2020, Professor Isukapalli.
 
 The goal of this project is to minimize the time spent waiting to purchase tickets at our cultural student organizations' annual night markets by automating digital wallet purchases using Android-based kiosks that can instantly detect and accurately dispense ticket purchases.
 
-This idea was originally proposed for this year's TASA Night Market, which has unfortunately been cancelled due to the current situation. This idea is also based on a previous project in my freshman year where I created a web interface for using Venmo purchases to purchase items on e-commerce stores.
+This idea was originally proposed for this year's [TASA Night Market](https://www.facebook.com/events/242619546576980/), which has unfortunately been cancelled due to the current situation. This idea is also based on a previous project in my freshman year where I created a web interface for using Venmo purchases to purchase items on e-commerce stores.
+
+![Venmo Ticket Dispenser](images/kiosk.jpg)
+
+![Purchase Tickets Screen](images/transaction.png)
 
 ## Parts List
 
 The following parts list reflects parts that will be used to build the application's accompanying ticket dispenser.
 
-*This parts list is still a work in progress. Purchased quantities may be more than what is needed for the project.*
-
 | Part | Quantity | Unit Price | Total Price |
 |------|----------|------------|-------------|
 | [Arduino Uno R3 Board](https://www.amazon.com/dp/B01EWOE0UU) | 1 | $12.99 | $12.99 |
-| [(Pack of 4pcs) NEMA17 Stepper Motor High Torque Bipolar DC Step Motor Kit by MOTOU](https://www.amazon.com/dp/B07RZHWYQ9) | 1 | $33.88 | $33.88 |
-| [BIQU A4988 Compatible StepStick Stepper Motor Diver Module with Heat Sink for 3D Printer Controller Ramps 1.4(Pack of 5pcs)](https://www.amazon.com/dp/B01FFGAKK8) | 1 | $8.99 | $8.99 |
+| [(Pack of 4pcs) NEMA17 Stepper Motor High Torque Bipolar DC Step Motor Kit by MOTOU](https://www.amazon.com/dp/B07RZHWYQ9) <br> * Only one of the four stepper motors is needed for this project | 1 | $33.88 | $33.88 |
+| [BIQU A4988 Compatible StepStick Stepper Motor Diver Module with Heat Sink for 3D Printer Controller Ramps 1.4 (Pack of 5pcs)](https://www.amazon.com/dp/B01FFGAKK8) <br> * Only one of the five stepper motor driver modules is needed for this project | 1 | $8.99 | $8.99 |
 | [HC-05 Wireless Bluetooth RF Transceiver](https://www.amazon.com/dp/B071YJG8DR) | 1 | $7.99 | $7.99 |
-| Photoresistor | 1 | ? | ? |
-| LED | 1 | ? | ? |
+| [12V 2A DC Power Supply](https://www.amazon.com/dp/B00Q2E5IXW/) | 1 | $7.99 | $7.99 |
+| [DC Power Cable Female Connector Plug (Pack of 10)](https://www.amazon.com/dp/B005CMP434/) <br> * Only one of the ten connector plugs is needed for this project | 1 | $5.87 | $5.87 |
+| Photoresistor and LED | 1 | -- | -- |
+| **TOTAL** (does not reflect partial quantities) |   |   | **$77.71** |
+
+\* All prices are listed before taxes, tariffs, and shipping costs.
+
+## Peripherals
+
+The circuit for the Arduino-based ticket dispenser is shown below.
+
+Important components:
+* HC-05 module to communicate with the Android device over Bluetooth
+* Stepper motor to roll out tickets as needed
+* LED and photoresistor to detect light pulses from passing tickets to count dispensed tickets
+
+![Ticket Dispenser Circuit](images/hardware.jpg)
+
+## Arduino Pin Connections
+
+* Digital 0: HC-05 Tx
+* Digital 1: HC-05 Rx
+* Digital 4: Stepper Motor Direction
+* Digital 5: Stepper Motor Step
+* Digital 6: Stepper Motor Enable
+* Analog 0: Photoresistor
+
+## Software Design
+
+The app consists of three components:
+
+* Android App
+* Arduino Ticket Dispenser
+* Node.js Backend
+
+(Work in progress, will be completed later today)
 
 ---
 
@@ -74,7 +114,7 @@ I received all the parts and spent the majority of this week assembling the tick
 
 Given the limited resources I have, I redesigned my ticket dispenser mechanism to work as follows:
 
-![Ticket Dispenser Design](design.png)
+![Ticket Dispenser Design](images/design.png)
 
 * Note that the design still shows an electromagnet, but since I was unable to get it to work for the purposes of this class, it will be omitted from the final product.
 
@@ -112,3 +152,7 @@ My plan of action for implementing the Android application is as follows:
 5. Implement NFC functionality to access admin settings
 
 Due to my other final project, I am not able to spend much time on this early in the week, so progress will be limited for now. I will continue to work on this over the weekend and into next week, where I will post my final update.
+
+## Week 11 Update (June 12)
+
+(Work in progress, will be completed later today)
